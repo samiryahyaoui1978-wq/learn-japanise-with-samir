@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>أكاديمية الياياني — تعلم اليابانية خطوة بخطوة</title>
+  <meta name="description" content="موقع تعليمي متكامل لتعلم اللغة اليابانية: الهيراغانا والكاتاكانا، كلمات يومية بالصوت، وثقافة يابانية — ملف HTML واحد" />
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --card: rgba(255,255,255,0.06);
+      --muted: #a7b0c2;
+      --text: #e9eef7;
+      --accent1: #7c3aed;
+      --accent2: #06b6d4;
+      --ring: rgba(124,58,237,0.35);
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:radial-gradient(1200px 800px at 100% -20%, rgba(124,58,237,0.2), transparent 60%),
+      radial-gradient(1000px 700px at -10% 120%, rgba(6,182,212,0.2), transparent 60%),
+      var(--bg);
+      color:var(--text);font:400 16px/1.7 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Noto Sans Arabic",Tahoma,Arial; 
+    }
+    a{color:var(--accent2);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Layout */
+    .container{max-width:1200px;margin-inline:auto;padding:24px}
+    header.hero{position:relative;overflow:hidden;border-radius:24px;padding:36px; background:
+      linear-gradient(135deg, rgba(124,58,237,0.18), rgba(6,182,212,0.18));
+      border:1px solid rgba(255,255,255,0.08); box-shadow:0 10px 30px rgba(0,0,0,0.25)}
+    .hero h1{margin:0 0 8px;font-weight:800;letter-spacing:.2px;font-size:clamp(28px,4vw,44px)}
+    .hero p{margin:0;color:var(--muted)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .chip{padding:8px 12px;border-radius:999px;background:var(--card);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(6px)}
+
+    nav{position:sticky;top:10px;z-index:50;margin:18px 0}
+    .nav{display:flex;flex-wrap:wrap;gap:10px;background:var(--card);border:1px solid rgba(255,255,255,.08);padding:10px;border-radius:16px;backdrop-filter:blur(8px)}
+    .nav a{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid transparent}
+    .nav a:hover{border-color:var(--ring);background:rgba(124,58,237,0.08)}
+
+    .grid{display:grid;gap:20px}
+    @media(min-width:1000px){.grid{grid-template-columns:280px 1fr}}
+
+    aside{position:sticky;top:74px;align-self:start}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:18px;backdrop-filter:blur(8px); box-shadow:0 6px 20px rgba(0,0,0,0.18)}
+    .card h3{margin:0 0 10px}
+    .field{display:grid;gap:6px;margin:10px 0}
+    input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0e1422;color:var(--text);outline:none}
+    input:focus,textarea:focus{border-color:var(--ring);box-shadow:0 0 0 4px rgba(124,58,237,0.1)}
+    .btn{cursor:pointer;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:linear-gradient(135deg, rgba(124,58,237,.35), rgba(6,182,212,.35));color:var(--text)}
+    .btn:hover{filter:brightness(1.08)}
+
+    section{scroll-margin-top:90px}
+    section h2{margin:0 0 12px;font-size:clamp(22px,3vw,32px)}
+    .sub{color:var(--muted);margin:-4px 0 12px}
+
+    /* Kana tables */
+    .tabs{display:flex;gap:10px;margin:10px 0 16px}
+    .tab{padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:#0e1422;cursor:pointer}
+    .tab[aria-selected="true"]{background:linear-gradient(135deg, rgba(124,58,237,.5), rgba(6,182,212,.5));}
+    .kana-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px}
+    .cell{position:relative;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#0f1525; text-align:center}
+    .cell .jp{font-family:"Noto Sans JP",ui-sans-serif,system-ui;display:block;font-size:22px;font-weight:700}
+    .cell .ro{display:block;color:var(--muted);font-size:12px}
+    .cell button{position:absolute;left:8px;top:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:16px}
+    .cell:hover{outline:2px solid var(--ring)}
+
+    /* Words */
+    .tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .word{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#0f1525}
+    .word .ja{font-family:"Noto Sans JP";font-weight:700}
+    .badge{display:inline-block;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:12px;color:var(--muted)}
+
+    /* Culture gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+    .gallery figure{margin:0;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:#0f1525}
+    .gallery img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .5s}
+    .gallery figure:hover img{transform:scale(1.06)}
+    .gallery figcaption{padding:10px;color:var(--muted);font-size:14px}
+
+    /* Footer */
+    footer{margin:28px 0 10px;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>أكاديمية اليابانية — تعلم بذكاء، وبأسلوب ممتع ✨</h1>
+      <p>هذا الموقع الشامل يجمع <strong>كل أحرف الهيراغانا والكاتاكانا</strong> مع نطق صوتي فوري، <strong>قاموس كلمات يومية</strong> قابل للبحث، ونبذة أنيقة عن <strong>الثقافة اليابانية</strong> — في ملف HTML واحد فقط.</p>
+      <div class="chips">
+        <span class="chip">🎧 نطق آلي ياباني</span>
+        <span class="chip">🈴 جداول كانا كاملة</span>
+        <span class="chip">🔎 بحث فوري</span>
+        <span class="chip">🗾 ثقافة يابانية بالصور</span>
+      </div>
+    </header>
+
+    <nav>
+      <div class="nav">
+        <a href="#profile">خانة تعريفية بي</a>
+        <a href="#kana">أحرف الهيراغانا & الكاتاكانا</a>
+        <a href="#words">كلمات وجُمل يومية</a>
+        <a href="#culture">الثقافة اليابانية</a>
+      </div>
+    </nav>
+
+    <div class="grid">
+      <aside>
+        <div class="card" id="profile">
+          <h3>الخانة التعريفية</h3>
+          <p class="sub">عرّف بنفسك ليعرض الموقع بياناتك بدقة في كل مكان.</p>
+          <div class="field"><label>الاسم</label><input id="p-name" placeholder="مثال: سمير يحيّاوي" value="سمير"/></div>
+          <div class="field"><label>الهدف من التعلّم</label><input id="p-goal" placeholder="مثال: الدراسة في اليابان / مشاهدة الأنمي بدون ترجمة" value="مشاهدة الأنمي بدون ترجمة"/></div>
+          <div class="field"><label>مستواي الحالي</label>
+            <select id="p-level">
+              <option>مبتدئ</option>
+              <option>مستوى أساسي (N5)</option>
+              <option>مستوى تمهيدي (N4)</option>
+              <option>متوسط (N3)</option>
+              <option>متقدم (N2)</option>
+              <option>محترف (N1)</option>
+            </select>
+          </div>
+          <button class="btn" id="save-profile">حفظ البيانات</button>
+          <p id="profile-status" style="margin:8px 0 0;color:var(--muted)"></p>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section id="intro" class="card">
+          <h2>مرحبًا <span id="hello-name">بك</span> 👋</h2>
+          <p>أهلًا بك في رحلتك مع اللغة اليابانية! هذا الموقع صُمّم لك خصيصًا — <strong id="hello-goal">اضبط هدفك من الخانة التعريفية</strong> — وسيُظهر مستوى تقدّمك الحالي: <strong id="hello-level">مبتدئ</strong>.</p>
+        </section>
+
+        <section id="kana" class="card">
+          <h2>أحرف الكانا اليابانية</h2>
+          <p class="sub">تعرّف على الهيراغانا والكاتاكانا. اضغط على أي حرف لسماع نطقه (يتطلب اتصالًا بالإنترنت لدعم الصوت في متصفحك).</p>
+
+          <div class="tabs" role="tablist">
+            <button class="tab" role="tab" aria-selected="true" data-target="hiragana">هيراغانا</button>
+            <button class="tab" role="tab" aria-selected="false" data-target="katakana">كاتاكانا</button>
+            <button class="tab" role="tab" aria-selected="false" data-target="dakuten">حروف مُنقّطة/ممدودة</button>
+            <button class="tab" role="tab" aria-selected="false" data-target="yoon">مقاطع يُون (ゃゅょ)</button>
+          </div>
+
+          <div id="kana-wrap">
+            <div id="hiragana" class="kana-grid" aria-hidden="false"></div>
+            <div id="katakana" class="kana-grid" aria-hidden="true"></div>
+            <div id="dakuten" class="kana-grid" aria-hidden="true"></div>
+            <div id="yoon" class="kana-grid" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <section id="words" class="card">
+          <h2>كلمات وجُمل يومية</h2>
+          <p class="sub">ابحث واستمع للنطق الفوري. تم تنظيم العبارات في فئات مختارة للمبتدئين.</p>
+          <div class="tools">
+            <input id="search" placeholder="ابحث: صباح الخير، شكرًا، مرحبًا…" />
+            <select id="filter">
+              <option value="">كل الفئات</option>
+              <option value="تحيات">تحيات</option>
+              <option value="أساسيات">أساسيات</option>
+              <option value="أرقام">أرقام</option>
+              <option value="أيام">أيام الأسبوع</option>
+              <option value="سفر">السفر</option>
+            </select>
+            <button class="btn" id="shuffle">🔀 أقترح لي 10 عبارات</button>
+          </div>
+          <div class="list" id="words-list"></div>
+        </section>
+
+        <section id="culture" class="card">
+          <h2>الثقافة اليابانية — لمحات بصرية</h2>
+          <p class="sub">صور مُنتقاة تعرّفك على بعض جوانب الثقافة اليابانية (بوابات التوري، المهرجانات، المطبخ، والحدائق). جميع الصور روابط عامة للاستخدام التعليمي.</p>
+          <div class="gallery">
+            <figure>
+              <img loading="lazy" alt="بوابة توري حمراء على الماء" src="https://images.unsplash.com/photo-1503891450247-ee5f8ec46dc3?q=80&w=1200&auto=format&fit=crop"/>
+              <figcaption>بوابات <strong>توري</strong> — رمز الانتقال إلى أماكن مقدّسة في الشنتو.</figcaption>
+            </figure>
+            <figure>
+              <img loading="lazy" alt="شارع مزين بالفوانيس أثناء مهرجان" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop"/>
+              <figcaption>المهرجانات <strong>ماتسوري</strong> — احتفالات محلية مليئة بالموسيقى والرقص.</figcaption>
+            </figure>
+            <figure>
+              <img loading="lazy" alt="سوشي ياباني متنوع" src="https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=1200&auto=format&fit=crop"/>
+              <figcaption>المطبخ الياباني — <strong>سوشي</strong>، <strong>رامِن</strong>، و<strong>أونِغيري</strong>.</figcaption>
+            </figure>
+            <figure>
+              <img loading="lazy" alt="حديقة زن يابانية هادئة" src="https://images.unsplash.com/photo-1509043759401-136742328bb3?q=80&w=1200&auto=format&fit=crop"/>
+              <figcaption>حدائق <strong>زن</strong> — الهدوء والتأمل والجمال البسيط.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <footer>
+          صُمّم بحب للتعلّم — ملف واحد، قابل للتطوير. جرّبه على هاتفك كذلك 📱
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ====== Utilities: Speech Synthesis ======
+    const speak = (text, lang = 'ja-JP') => {
+      try {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = lang; u.rate = 0.95; u.pitch = 1.05; u.volume = 1;
+        speechSynthesis.speak(u);
+      } catch (e) { console.warn('Speech not supported', e); }
+    };
+
+    // ====== Profile (LocalStorage) ======
+    const $ = (s, r=document) => r.querySelector(s);
+    const nameI = $('#p-name'), goalI = $('#p-goal'), levelI = $('#p-level');
+    const saveBtn = $('#save-profile'), statusP = $('#profile-status');
+    const helloName = $('#hello-name'), helloGoal = $('#hello-goal'), helloLevel = $('#hello-level');
+
+    const loadProfile = () => {
+      const p = JSON.parse(localStorage.getItem('jp.profile')||'{}');
+      if(p.name) nameI.value = p.name;
+      if(p.goal) goalI.value = p.goal;
+      if(p.level) levelI.value = p.level;
+      renderHello();
+    };
+    const renderHello = () => {
+      helloName.textContent = nameI.value ? nameI.value : 'بك';
+      helloGoal.textContent = goalI.value ? goalI.value : 'اضبط هدفك من الخانة التعريفية';
+      helloLevel.textContent = levelI.value || 'مبتدئ';
+    };
+    saveBtn.addEventListener('click', ()=>{
+      const data = {name:nameI.value.trim(), goal:goalI.value.trim(), level:levelI.value};
+      localStorage.setItem('jp.profile', JSON.stringify(data));
+      statusP.textContent = '✅ تم الحفظ محليًا (على هذا المتصفح).';
+      renderHello();
+    });
+
+    // ====== Tabs ======
+    document.querySelectorAll('.tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected','false'));
+        btn.setAttribute('aria-selected','true');
+        const tgt = btn.dataset.target;
+        document.querySelectorAll('#kana-wrap > div').forEach(d=>{
+          d.setAttribute('aria-hidden', d.id===tgt? 'false':'true');
+          d.style.display = d.id===tgt? 'grid':'none';
+        })
+      })
+    })
+
+    // ====== Kana Data ======
+    const base = {
+      hiragana: [
+        ['あ','a'],['い','i'],['う','u'],['え','e'],['お','o'],
+        ['か','ka'],['き','ki'],['く','ku'],['け','ke'],['こ','ko'],
+        ['さ','sa'],['し','shi'],['す','su'],['せ','se'],['そ','so'],
+        ['た','ta'],['ち','chi'],['つ','tsu'],['て','te'],['と','to'],
+        ['な','na'],['に','ni'],['ぬ','nu'],['ね','ne'],['の','no'],
+        ['は','ha'],['ひ','hi'],['ふ','fu'],['へ','he'],['ほ','ho'],
+        ['ま','ma'],['み','mi'],['む','mu'],['め','me'],['も','mo'],
+        ['や','ya'],['ゆ','yu'],['よ','yo'],
+        ['ら','ra'],['り','ri'],['る','ru'],['れ','re'],['ろ','ro'],
+        ['わ','wa'],['を','wo'],['ん','n']
+      ],
+      katakana: [
+        ['ア','a'],['イ','i'],['ウ','u'],['エ','e'],['オ','o'],
+        ['カ','ka'],['キ','ki'],['ク','ku'],['ケ','ke'],['コ','ko'],
+        ['サ','sa'],['シ','shi'],['ス','su'],['セ','se'],['ソ','so'],
+        ['タ','ta'],['チ','chi'],['ツ','tsu'],['テ','te'],['ト','to'],
+        ['ナ','na'],['ニ','ni'],['ヌ','nu'],['ネ','ne'],['ノ','no'],
+        ['ハ','ha'],['ヒ','hi'],['フ','fu'],['ヘ','he'],['ホ','ho'],
+        ['マ','ma'],['ミ','mi'],['ム','mu'],['メ','me'],['モ','mo'],
+        ['ヤ','ya'],['ユ','yu'],['ヨ','yo'],
+        ['ラ','ra'],['リ','ri'],['ル','ru'],['レ','re'],['ロ','ro'],
+        ['ワ','wa'],['ヲ','wo'],['ン','n']
+      ],
+      dakuten: [
+        ['が','ga'],['ぎ','gi'],['ぐ','gu'],['げ','ge'],['ご','go'],
+        ['ざ','za'],['じ','ji'],['ず','zu'],['ぜ','ze'],['ぞ','zo'],
+        ['だ','da'],['ぢ','ji'],['づ','zu'],['で','de'],['ど','do'],
+        ['ば','ba'],['び','bi'],['ぶ','bu'],['べ','be'],['ぼ','bo'],
+        ['ぱ','pa'],['ぴ','pi'],['ぷ','pu'],['ぺ','pe'],['ぽ','po'],
+        ['ヴ','vu']
+      ],
+      yoon: [
+        ['きゃ','kya'],['きゅ','kyu'],['きょ','kyo'],
+        ['しゃ','sha'],['しゅ','shu'],['しょ','sho'],
+        ['ちゃ','cha'],['ちゅ','chu'],['ちょ','cho'],
+        ['にゃ','nya'],['にゅ','nyu'],['にょ','nyo'],
+        ['ひゃ','hya'],['ひゅ','hyu'],['ひょ','hyo'],
+        ['みゃ','mya'],['みゅ','myu'],['みょ','myo'],
+        ['りゃ','rya'],['りゅ','ryu'],['りょ','ryo'],
+        ['ぎゃ','gya'],['ぎゅ','gyu'],['ぎょ','gyo'],
+        ['じゃ','ja'],['じゅ','ju'],['じょ','jo'],
+        ['びゃ','bya'],['びゅ','byu'],['びょ','byo'],
+        ['ぴゃ','pya'],['ぴゅ','pyu'],['ぴょ','pyo']
+      ]
+    };
+
+    const renderKana = (id, data) => {
+      const wrap = document.getElementById(id);
+      wrap.innerHTML = '';
+      data.forEach(([jp, ro])=>{
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.innerHTML = `<button title="تشغيل" aria-label="تشغيل">🔊</button><span class="jp">${jp}</span><span class="ro">${ro}</span>`;
+        cell.querySelector('button').addEventListener('click',()=> speak(jp));
+        wrap.appendChild(cell);
+      })
+    };
+
+    renderKana('hiragana', base.hiragana);
+    renderKana('katakana', base.katakana);
+    renderKana('dakuten', base.dakuten);
+    renderKana('yoon', base.yoon);
+
+    // ====== Words ======
+    const words = [
+      // تحيات
+      {cat:'تحيات', ja:'こんにちは', ro:'konnichiwa', ar:'مرحبًا/مساء الخير'},
+      {cat:'تحيات', ja:'おはよう', ro:'ohayō', ar:'صباح الخير'},
+      {cat:'تحيات', ja:'こんばんは', ro:'konbanwa', ar:'مساء الخير'},
+      {cat:'تحيات', ja:'さようなら', ro:'sayōnara', ar:'إلى اللقاء'},
+      {cat:'تحيات', ja:'はじめまして', ro:'hajimemashite', ar:'تشرفت بلقائك'},
+      {cat:'تحيات', ja:'お元気ですか？', ro:'ogenki desu ka?', ar:'كيف حالك؟'},
+      {cat:'تحيات', ja:'ありがとうございます', ro:'arigatō gozaimasu', ar:'شكرًا جزيلًا'},
+      {cat:'تحيات', ja:'すみません', ro:'sumimasen', ar:'المعذرة / عفوًا'},
+
+      // أساسيات
+      {cat:'أساسيات', ja:'はい', ro:'hai', ar:'نعم'},
+      {cat:'أساسيات', ja:'いいえ', ro:'iie', ar:'لا'},
+      {cat:'أساسيات', ja:'お願いします', ro:'onegai shimasu', ar:'من فضلك'},
+      {cat:'أساسيات', ja:'わかりません', ro:'wakarimasen', ar:'لا أفهم'},
+      {cat:'أساسيات', ja:'もう一度', ro:'mō ichido', ar:'مرة أخرى'},
+      {cat:'أساسيات', ja:'いくらですか？', ro:'ikura desu ka?', ar:'بكم هذا؟'},
+
+      // أرقام 0–10
+      {cat:'أرقام', ja:'ゼロ/れい', ro:'zero/rei', ar:'صفر'},
+      {cat:'أرقام', ja:'いち', ro:'ichi', ar:'واحد'},
+      {cat:'أرقام', ja:'に', ro:'ni', ar:'اثنان'},
+      {cat:'أرقام', ja:'さん', ro:'san', ar:'ثلاثة'},
+      {cat:'أرقام', ja:'よん/し', ro:'yon/shi', ar:'أربعة'},
+      {cat:'أرقام', ja:'ご', ro:'go', ar:'خمسة'},
+      {cat:'أرقام', ja:'ろく', ro:'roku', ar:'ستة'},
+      {cat:'أرقام', ja:'なな/しち', ro:'nana/shichi', ar:'سبعة'},
+      {cat:'أرقام', ja:'はち', ro:'hachi', ar:'ثمانية'},
+      {cat:'أرقام', ja:'きゅう/く', ro:'kyū/ku', ar:'تسعة'},
+      {cat:'أرقام', ja:'じゅう', ro:'jū', ar:'عشرة'},
+
+      // أيام الأسبوع
+      {cat:'أيام', ja:'月曜日', ro:'getsuyōbi', ar:'الاثنين'},
+      {cat:'أيام', ja:'火曜日', ro:'kayōbi', ar:'الثلاثاء'},
+      {cat:'أيام', ja:'水曜日', ro:'suiyōbi', ar:'الأربعاء'},
+      {cat:'أيام', ja:'木曜日', ro:'mokuyōbi', ar:'الخميس'},
+      {cat:'أيام', ja:'金曜日', ro:'kinyōbi', ar:'الجمعة'},
+      {cat:'أيام', ja:'土曜日', ro:'doyōbi', ar:'السبت'},
+      {cat:'أيام', ja:'日曜日', ro:'nichiyōbi', ar:'الأحد'},
+
+      // سفر
+      {cat:'سفر', ja:'駅はどこですか？', ro:'eki wa doko desu ka?', ar:'أين المحطّة؟'},
+      {cat:'سفر', ja:'助けてください', ro:'tasukete kudasai', ar:'النجدة من فضلك'},
+      {cat:'سفر', ja:'トイレは？', ro:'toire wa?', ar:'أين الحمّام؟'},
+      {cat:'سفر', ja:'これは美味しい', ro:'kore wa oishii', ar:'هذا لذيذ'},
+    ];
+
+    const list = document.getElementById('words-list');
+    const drawWords = (items) => {
+      list.innerHTML='';
+      items.forEach(w=>{
+        const d = document.createElement('div');
+        d.className='word';
+        d.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <span class="badge">${w.cat}</span>
+            <button class="btn" title="استمع" aria-label="استمع">🔊</button>
+          </div>
+          <div class="ja" style="font-size:20px;margin-top:8px">${w.ja}</div>
+          <div style="color:var(--muted);font-size:13px">${w.ro}</div>
+          <div style="margin-top:6px">${w.ar}</div>
+        `;
+        d.querySelector('button').addEventListener('click',()=> speak(w.ja));
+        list.appendChild(d);
+      })
+    };
+
+    drawWords(words);
+
+    // Search & filter
+    const searchI = document.getElementById('search');
+    const filterI = document.getElementById('filter');
+    const shuffleBtn = document.getElementById('shuffle');
+
+    const apply = () => {
+      const q = (searchI.value||'').toLowerCase().trim();
+      const c = filterI.value;
+      const out = words.filter(w=> {
+        const inCat = !c || w.cat===c;
+        const match = !q || [w.ja, w.ro, w.ar].join(' ').toLowerCase().includes(q);
+        return inCat && match;
+      });
+      drawWords(out);
+    };
+
+    searchI.addEventListener('input', apply);
+    filterI.addEventListener('change', apply);
+    shuffleBtn.addEventListener('click', ()=>{
+      const copy = [...words].sort(()=>Math.random()-0.5).slice(0,10);
+      drawWords(copy);
+    });
+
+    // Init
+    loadProfile();
+  </script>
+  <nav>
+    <a href="#lessons">الدروس</a>
+    <a href="#about-me">تعريف بي</a>
+  </nav>
+
+  <section id="lessons">
+    <h2>📚 الدروس الأولى</h2>
+    <div class="lesson">
+      <h3>الهيراغانا - الحروف اليابانية</h3>
+      <p>الهيراغانا هي الأبجدية الأساسية في اللغة اليابانية. تتكوّن من 46 حرفًا أساسيًا.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Table_hiragana.svg" alt="جدول الهيراغانا">
+    </div>
+    <div class="lesson">
+      <h3>الثقافة اليابانية</h3>
+      <p>الثقافة اليابانية غنية بالتقاليد مثل الشاي، الكيمونو، والأنمي.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Tokyo_Shibuya.jpg" alt="طوكيو - اليابان">
+    </div>
+  </section>
+
+  <section id="about-me" class="about-section">
+    <h2>👨‍💻 تعريف بي</h2>
+    <div class="about-card">
+      <img src="c:\Users\SETUP\Downloads\ChatGPT Image 27 août 2025, 20_02_59.png" alt="صورتي" class="profile-pic" width="150px">
+      
+      <div class="about-text">
+        <h3>سمير يحيّاوي</h3>
+        <p>مؤسس هذا الموقع لتعلم اللغة اليابانية. أعشق الثقافة اليابانية والأنمي، وأسعى لتبسيط اللغة اليابانية لكل المبتدئين بأسلوب ممتع وسهل.</p>
+        <p><strong>الهوايات:</strong> تصميم، ألعاب فيديو، تعلم لغات.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 - موقع تعلم اليابانية مع سمير</p>
+  </footer>
+</body>
+</html>
