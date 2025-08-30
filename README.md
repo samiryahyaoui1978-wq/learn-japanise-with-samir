@@ -451,6 +451,9 @@
 
   <footer>
     <p>© 2025 - موقع تعلم اليابانية مع سمير</p>
+    <p>© 2025 -learn japanise with samir </p>
+
+    
   </footer>
 </body>
 </html>
